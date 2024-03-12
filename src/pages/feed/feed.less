@@ -1,3 +1,5 @@
+@import url('src/styles/consts.less');
+
 .feed_wrapper {
     display: flex;
     flex-direction: column;
@@ -13,7 +15,7 @@
     &__left_column {
         position: relative;
         width: 25%;
-        border-right: 1px solid #f4f6f8;
+        border-right: 1px solid @colorBorder;
         box-sizing: border-box;
     }
 
@@ -27,7 +29,7 @@
 .chat__list {
     &_item {
         &:hover {
-            background-color: #e4edfd;
+            background-color: @colorFillSecondary;
         }
 
         cursor: pointer;
@@ -65,10 +67,10 @@
 
             &_notification {
                 max-width: 50px;
-                background-color: #3369f3;
+                background-color: @colorBadge;
                 padding: 0 8px;
                 border-radius: 10px;
-                color: #fff;
+                color: white;
             }
         }
     }
@@ -79,7 +81,7 @@
     flex-direction: column;
     height: 100%;
     width: 100%;
-    background: #fff;
+    background: @colorFill;
     align-items: center;
     justify-content: center;
     font-size: 24px;

@@ -1,5 +1,5 @@
 import Handlebars from "handlebars";
-import "./style.less";
+import "./styles/style.less";
 import * as Pages from "./pages";
 import * as Components from "./components";
 
