@@ -1,0 +1,88 @@
+@import url('src/styles/consts.less');
+
+.feed_wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.feed {
+    flex: 1 1 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+
+    &__left_column {
+        position: relative;
+        width: 25%;
+        border-right: 1px solid @colorBorder;
+        box-sizing: border-box;
+    }
+
+    &__right_column {
+        position: relative;
+        width: 75%;
+        box-sizing: border-box;
+    }
+}
+
+.chat__list {
+    &_item {
+        &:hover {
+            background-color: @colorFillSecondary;
+        }
+
+        cursor: pointer;
+        display: flex;
+        margin: 8px 0;
+        padding: 8px;
+
+        &_avatar {
+            width: 47px;
+            flex-shrink: 0;
+        }
+
+        &_content {
+            flex: 1;
+        }
+
+        &_header {
+            display: flex;
+
+            &_title {
+                flex: 1;
+            }
+
+            &_date {
+                max-width: 50px;
+            }
+        }
+
+        &_description {
+            display: flex;
+
+            &_text {
+                flex: 1;
+            }
+
+            &_notification {
+                max-width: 50px;
+                background-color: @colorBadge;
+                padding: 0 8px;
+                border-radius: 10px;
+                color: white;
+            }
+        }
+    }
+}
+
+.empty_chat {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background: @colorFill;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}

@@ -1,0 +1,53 @@
+@import url('./consts.less');
+
+@import url(src/components/form/form.less);
+@import url(src/components/input/input.less);
+@import url(src/components/button/button.less);
+@import url(src/components/warning/warning.less);
+@import url(src/components/avatar/avatar.less);
+@import url(src/components/page-wrapper/page-wrapper.less);
+
+@import url(src/pages/profile/profile.less);
+@import url(src/pages/feed/feed.less);
+@import url(src/pages/register/register.less);
+
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+a {
+  font-weight: 500;
+  color: @colorLink;
+  text-decoration: inherit;
+}
+
+a:hover {
+  color: @colorLinkHover;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+.menu {
+  position: absolute;
+  bottom: 0;
+}
+
+.menu li {
+  display: inline;
+}
+
+.menu li+li {
+  margin-left: 32px;
+}
