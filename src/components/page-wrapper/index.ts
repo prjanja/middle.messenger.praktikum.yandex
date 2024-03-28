@@ -1,1 +1,1 @@
-export { default as PageWrapper } from "./page-wrapper.hbs?raw";
+export { default as PageWrapper } from './page-wrapper.hbs?raw';

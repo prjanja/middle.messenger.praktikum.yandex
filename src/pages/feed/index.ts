@@ -1,1 +1,1 @@
-export { default as Feed } from "./feed.hbs?raw";
+export { default as Feed } from './feed.hbs?raw';

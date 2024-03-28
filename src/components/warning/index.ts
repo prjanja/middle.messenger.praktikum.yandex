@@ -1,1 +1,1 @@
-export { default as Warning } from "./warning.hbs?raw";
+export { default as Warning } from './warning.hbs?raw';

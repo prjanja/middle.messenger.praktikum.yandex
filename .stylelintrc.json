@@ -1,0 +1,7 @@
+{
+  "extends": "stylelint-config-standart",
+  "ignoreFiles": ["dist/*"],
+  "rules": {
+    "string-quotes": "single"
+  }
+}

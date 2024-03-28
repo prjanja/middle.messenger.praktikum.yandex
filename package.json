@@ -1,24 +1,35 @@
 {
-  "name": "praktikum_messenger",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "engines": {
-    "node": ">=12.0"
-  },
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "start": "npm run build && node server.js"
-  },
-  "devDependencies": {
-    "express": "^4.18.3",
-    "less": "^4.2.0",
-    "typescript": "^5.2.2",
-    "vite": "^5.1.4"
-  },
-  "dependencies": {
-    "handlebars": "^4.7.8"
-  }
+    "name": "praktikum_messenger",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "engines": {
+        "node": ">=12.0"
+    },
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview",
+        "start": "npm run build && node server.js",
+        "eslint": "eslint",
+        "eslint:fix": "eslint \"src/**/*.ts\" --fix",
+        "stylelint": "stylelint \"src/**/*.less\"",
+        "stylelint:fix": "stylelint \"src/**/*.less\" --fix",
+        "prettier:fix": "prettier --write \"src/**/*.ts\""
+    },
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^7.4.0",
+        "@typescript-eslint/parser": "^7.4.0",
+        "eslint": "^8.57.0",
+        "eslint-config-airbnb": "^19.0.4",
+        "express": "^4.18.3",
+        "less": "^4.2.0",
+        "prettier": "^3.2.5",
+        "stylelint": "^16.3.1",
+        "typescript": "^5.2.2",
+        "vite": "^5.1.4"
+    },
+    "dependencies": {
+        "handlebars": "^4.7.8"
+    }
 }
