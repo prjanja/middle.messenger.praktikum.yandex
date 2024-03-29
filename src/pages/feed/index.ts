@@ -1,5 +1,6 @@
 import { Button, ChatListItem, Input } from '../../components';
 import Block from '../../utils/block';
+import { printFormData } from '../../utils/formUtils';
 import template from './feed.hbs?raw';
 
 const chats = [
@@ -59,9 +60,21 @@ export class Feed extends Block {
             type: 'button'
         });
         this.children.MessageInput = new Input({
-            name: 'message'
+            name: 'message',
+            validate: true
         });
-        this.children.SendButton = new Button({ icon: '/send.svg', type: 'button' });
+        this.children.SendButton = new Button({
+            icon: '/send.svg',
+            type: 'button',
+            events: {
+                click: (e) => {
+                    e.preventDefault();
+
+                    const form = this.element?.querySelector('form') as HTMLFormElement;
+                    printFormData(form);
+                }
+            }
+        });
     }
 
     render() {

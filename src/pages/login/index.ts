@@ -1,5 +1,6 @@
 import { Button, Input } from '../../components';
 import Block from '../../utils/block';
+import { printFormData, validateForm } from '../../utils/formUtils';
 import template from './login.hbs?raw';
 
 const formFields = [
@@ -12,13 +13,23 @@ export class Login extends Block {
 
         this.lists.FormFields = formFields.map((inputProps) => {
             return new Input({
-                ...inputProps
+                ...inputProps,
+                validate: true
             });
         });
 
         this.children.LoginButton = new Button({
             type: 'button',
-            label: 'Вход'
+            label: 'Вход',
+            events: {
+                click: (e) => {
+                    e.preventDefault();
+
+                    const form = this.element?.querySelector('form') as HTMLFormElement;
+                    printFormData(form);
+                    validateForm(form);
+                }
+            }
         });
     }
 

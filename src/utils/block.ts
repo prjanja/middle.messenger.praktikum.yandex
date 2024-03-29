@@ -46,6 +46,11 @@ export default class Block {
         const { events = {} } = this.props;
         Object.keys(events).forEach((eventName: string) => {
             this._element?.addEventListener(eventName, events[eventName]);
+            const input = this._element?.querySelector('input');
+
+            if (input) {
+                input.addEventListener(eventName, events[eventName]);
+            }
         });
     }
 
@@ -54,6 +59,11 @@ export default class Block {
 
         Object.keys(events).forEach((eventName: string) => {
             this._element?.removeEventListener(eventName, events[eventName]);
+            const input = this._element?.querySelector('input');
+
+            if (input) {
+                input.removeEventListener(eventName, events[eventName]);
+            }
         });
     }
 

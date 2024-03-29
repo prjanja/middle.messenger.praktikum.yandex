@@ -17,7 +17,8 @@ export class Profile extends Block {
 
         this.lists.FormFields = formFields.map((inputProps) => {
             return new Input({
-                ...inputProps
+                ...inputProps,
+                validate: true
             });
         });
 
