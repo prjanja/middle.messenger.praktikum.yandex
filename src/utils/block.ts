@@ -148,12 +148,10 @@ export default class Block {
         this._removeEvents();
 
         Object.entries(this.children).forEach(([key, child]) => {
-            // @ts-ignore
             propsAndStubs[key] = `<div data-id="${child._id}"></div>`;
         });
 
         Object.entries(this.lists).forEach(([key]) => {
-            // @ts-ignore
             propsAndStubs[key] = `<div data-id="__l_${_tmpId}"></div>`;
         });
 
