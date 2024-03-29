@@ -1,1 +1,7 @@
-<button class="button" type={{type}}>{{label}}</button>
+<button class="button" type={{type}}>
+    {{label}}
+
+    {{#if icon}}
+    <img src={{icon}} alt="Кнопка с иконкой">
+    {{/if}}
+</button>

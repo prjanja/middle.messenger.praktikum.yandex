@@ -1,0 +1,23 @@
+<div class="chat__list_item">
+    <div class="chat__list_item_avatar">
+        {{{ Avatar }}}
+    </div>
+    <div class="chat__list_item_content">
+        <div class="chat__list_item_header">
+            <div class="chat__list_item_header_title">
+                {{title}}
+            </div>
+            <div class="chat__list_item_header_date">
+                {{date}}
+            </div>
+        </div>
+        <div class="chat__list_item_description">
+            <div class="chat__list_item_description_text">
+                {{lastMessage}}
+            </div>
+            {{#if notification}}
+            <div class="chat__list_item_description_notification">{{notification}}</div>
+            {{/if}}
+        </div>
+    </div>
+</div>

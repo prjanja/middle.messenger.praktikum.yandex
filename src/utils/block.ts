@@ -19,7 +19,7 @@ export default class Block {
 
     _element: HTMLElement | null = null;
 
-    _id: string = v4();
+    _id: string;
 
     props: BlockProps;
 
@@ -34,9 +34,9 @@ export default class Block {
 
         const eventBusInstance = new EventBus();
         const { props, children, lists } = this._getChildrenPropsAndProps(propsWithChildren);
-        this.props = this._makePropsProxy({ ...props }) as BlockProps;
-        this.children = children;
-        this.lists = lists;
+        this.props = this._makeProxyForUpdate({ ...props, __id: this._id }) as BlockProps;
+        this.children = this._makeProxyForUpdate(children) as typeof this.children;
+        this.lists = this._makeProxyForUpdate(lists) as typeof this.lists;
         this.eventBus = () => eventBusInstance;
         this._registerEvents(eventBusInstance);
         eventBusInstance.emit(Block.EVENTS.INIT);
@@ -187,7 +187,7 @@ export default class Block {
         return this.element;
     }
 
-    _makePropsProxy(props: BlockProps) {
+    _makeProxyForUpdate(props: Record<string, unknown>) {
         const self = this;
 
         return new Proxy(props as object, {

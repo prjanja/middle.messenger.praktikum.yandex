@@ -24,6 +24,7 @@
     "rules": {
         "import/prefer-default-export": "off",
         "import/extensions": "off",
+        "import/no-unresolved": "off",
         "indent": ["error", 4, { "SwitchCase": 1 }],
         "prefer-template": "off",
         "comma-dangle": "off",
@@ -38,6 +39,7 @@
         ],
         "no-underscore-dangle": "off",
         "no-use-before-define": "off",
-        "no-param-reassign":"off"
+        "no-param-reassign": "off",
+        "no-useless-constructor": "off"
     }
 }
