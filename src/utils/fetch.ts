@@ -42,7 +42,7 @@ class HTTPTransport {
     };
 
     request = (url: string, options: FetchOptions = {}, timeout = 5000) => {
-        const { headers = {}, method, data } = options;
+        const { headers = {} as Headers, method, data } = options;
 
         return new Promise(function (resolve, reject) {
             if (!method) {
@@ -56,11 +56,11 @@ class HTTPTransport {
             xhr.open(method, isGet && !!data ? `${url}${createQueryParams(data)}` : url);
 
             Object.keys(headers).forEach((key) => {
-                // @ts-ignore
+                // @ts-expect-error: Из-за того, что headers может быть пустым он преобразуется в {}
                 xhr.setRequestHeader(key, headers[key]);
             });
 
-            xhr.onload = function () {
+            xhr.onload = () => {
                 resolve(xhr);
             };
 

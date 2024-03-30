@@ -12,7 +12,8 @@ function navigate(page: string) {
     if (page.startsWith('#')) {
         page = page.slice(1);
     }
-    // @ts-ignore
+
+    // @ts-expect-error: Страница имеет тип any, хотя по факту это класс
     const CurrentPage = Pages[page] || Pages.NotFound;
 
     const block = new CurrentPage();

@@ -199,14 +199,12 @@ export default class Block {
         const self = this;
 
         return new Proxy(props as object, {
-            get(target, prop) {
-                // @ts-ignore
+            get(target: Record<string, unknown>, prop: string) {
                 const value = target[prop];
                 return typeof value === 'function' ? value.bind(target) : value;
             },
-            set(target, prop, value) {
+            set(target: Record<string, unknown>, prop: string, value) {
                 const oldTarget = { ...target };
-                // @ts-ignore
                 target[prop] = value;
                 self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
                 return true;
