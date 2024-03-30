@@ -12,6 +12,8 @@ type FetchOptions = {
     data?: FormData | URLSearchParams;
 };
 
+type HTTPMethod = (url: string, options?: FetchOptions) => Promise<unknown>;
+
 export function createQueryParams(params: Record<string, any> = {}, arrayDelimiter = ',') {
     if (typeof params !== 'object') {
         throw new Error('Params must be object');
@@ -25,19 +27,19 @@ export function createQueryParams(params: Record<string, any> = {}, arrayDelimit
 }
 
 class HTTPTransport {
-    get = (url: string, options: FetchOptions = {}) => {
+    get: HTTPMethod = (url, options = {}) => {
         return this.request(url, { ...options, method: METHODS.GET }, options.timeout);
     };
 
-    post = (url: string, options: FetchOptions = {}) => {
+    post: HTTPMethod = (url, options = {}) => {
         return this.request(url, { ...options, method: METHODS.POST }, options.timeout);
     };
 
-    put = (url: string, options: FetchOptions = {}) => {
+    put: HTTPMethod = (url, options = {}) => {
         return this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
     };
 
-    delete = (url: string, options: FetchOptions = {}) => {
+    delete: HTTPMethod = (url, options = {}) => {
         return this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
     };
 
