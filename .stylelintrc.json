@@ -1,7 +1,14 @@
 {
-  "extends": "stylelint-config-standart",
-  "ignoreFiles": ["dist/*"],
-  "rules": {
-    "string-quotes": "single"
-  }
+    "extends": ["stylelint-config-standard"],
+    "ignoreFiles": ["dist/*"],
+    "rules": {
+        "at-rule-no-unknown": [
+            true,
+            {
+                "ignoreAtRules": ["/^color/"]
+            }
+        ],
+        "at-rule-empty-line-before": "never",
+        "selector-class-pattern": "^.*$"
+    }
 }
