@@ -1,21 +1,18 @@
-{{#> PageWrapper }}
-<div class="profile">
-    <a href="#Feed" class="back_button">&lt;К чатам</a>
-    <div class="user_avatar">
-        {{> Avatar }}
-    </div>
-    {{#> Form}}
-    {{> Input label="Почта" name="email" }}
-    {{> Input label="Логин" name="login" }}
-    {{> Input label="Имя" name="first_name" }}
-    {{> Input label="Фамилия" name="second_name" }}
-    {{> Input label="Имя в чате" name="display_name" }}
-    {{> Input label="Телефон" type="tel" name="phone" }}
-    {{/Form}}
-    <div class="profile__control">
-        <a href="#">Изменить данные</a>
-        <a href="#">Изменить пароль</a>
-        <a href="#Login">Выход</a>
+<div class="page_wrapper">
+    <div class="profile">
+        <a href="#Feed" class="back_button">&lt;К чатам</a>
+        <div class="user_avatar">
+            {{{ Avatar }}}
+        </div>
+        <div class="form_wrapper">
+            <form class="form">
+                {{{ FormFields }}}
+            </form>
+        </div>
+        <div class="profile__control">
+            <a href="#">Изменить данные</a>
+            <a href="#">Изменить пароль</a>
+            <a href="#Login">Выход</a>
+        </div>
     </div>
 </div>
-{{/PageWrapper}}

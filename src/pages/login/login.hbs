@@ -1,8 +1,11 @@
-{{#> PageWrapper }}
-{{#> Form title="Вход"}}
-{{> Input label="Логин" name="login"}}
-{{> Input label="Пароль" type="password" name="password"}}
-{{> Button label="Вход" type="button"}}
-<a href="#Register">Регистрация</a>
-{{/Form}}
-{{/PageWrapper}}
+<div class="page_wrapper">
+    <div class="form_wrapper">
+        <h1>Вход</h1>
+        <form class="form">
+            {{{ FormFields }}}
+
+            {{{ LoginButton }}}
+            <a href="#Register">Регистрация</a>
+        </form>
+    </div>
+</div>

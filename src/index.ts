@@ -1,77 +1,37 @@
-import Handlebars from "handlebars";
-import "./styles/style.less";
-import * as Pages from "./pages";
-import * as Components from "./components";
+import './styles/style.less';
+import * as Pages from './pages';
 
-const container = document.getElementById("app")!;
-const LOGIN_PAGE = "Login";
-const pageContext = {
-  Feed: {
-    chats: [
-      {
-        id: "111",
-        title: "Андрей",
-        date: "10:15",
-        avatar: "/avatar.svg",
-        lastMessage: "Изображение",
-        notification: 2,
-      },
-      {
-        id: "222",
-        title: "Киноклуб",
-        date: "10:15",
-        avatar: "/avatar.svg",
-        lastMessage: "стикер",
-        notification: 0,
-      },
-      {
-        id: "333",
-        title: "Илья",
-        date: "10:15",
-        avatar: "/avatar.svg",
-        lastMessage:
-          "Друзья, у меня для вас особенный выпуск новостей! Длинное сообщение, которое не помещается и нужны элипсы",
-        notification: 0,
-      },
-    ],
-  },
-  Profile: {
-    avatar: "/avatar.svg",
-  },
-};
+const container = document.getElementById('app')!;
+const LOGIN_PAGE = 'Login';
 
-let setHash = (hash: string) => {
-  window.location.hash = hash;
+const setHash = (hash: string) => {
+    window.location.hash = hash;
 };
 
 function navigate(page: string) {
-  if (page.startsWith("#")) {
-    page = page.slice(1);
-  }
-  //@ts-ignore
-  let currentPage = Pages[page] || Pages.NotFound;
-  if (currentPage) {
-    //@ts-ignore
-    let text = Handlebars.compile(currentPage)(pageContext[page] || {});
+    if (page.startsWith('#')) {
+        page = page.slice(1);
+    }
 
-    container.innerHTML = text;
-  }
+    // @ts-expect-error: Страница имеет тип any, хотя по факту это класс
+    const CurrentPage = Pages[page] || Pages.NotFound;
+
+    const block = new CurrentPage();
+    container.innerHTML = '';
+    container.append(block.getContent()!);
+    block.dispatchComponentDidMount();
 }
 
 function locationHashChanged() {
-  navigate(location.hash);
+    navigate(window.location.hash);
 }
 
 window.onhashchange = locationHashChanged;
 
-Object.entries(Components).forEach(([name, component]) => {
-  Handlebars.registerPartial(name, component);
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  if (window.location.hash.slice(1) !== LOGIN_PAGE) {
-    setHash(LOGIN_PAGE);
-  } else {
-    navigate(LOGIN_PAGE);
-  }
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.location.hash.slice(1) !== LOGIN_PAGE) {
+        setHash(LOGIN_PAGE);
+    } else {
+        navigate(LOGIN_PAGE);
+    }
 });

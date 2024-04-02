@@ -76,6 +76,32 @@
     }
 }
 
+.chat {
+    &__container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        background: #fff;
+    }
+
+    &__messages_wrapper {
+        flex-grow: 1;
+        position: relative;
+        min-height: 100px;
+        overflow: auto;
+        padding: 0 10px;
+    }
+
+    &__input_wrapper form {
+        display: flex;
+        padding: 5px;
+        border-top: solid 1px;
+        margin-bottom: 50px;
+        align-items: baseline;
+        gap: 8px;
+    }
+}
+
 .empty_chat {
     display: flex;
     flex-direction: column;

@@ -1,1 +1,12 @@
-export { default as PageWrapper } from "./page-wrapper.hbs?raw";
+import Block from '../../utils/block';
+import template from './page-wrapper.hbs?raw';
+
+export class PageWrapper extends Block {
+    constructor() {
+        super();
+    }
+
+    render() {
+        return template;
+    }
+}
