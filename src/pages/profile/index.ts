@@ -1,4 +1,4 @@
-import { Avatar, Button, Input } from '../../components';
+import { Avatar, Button, TextRow } from '../../components';
 import { AuthController } from '../../controllers/authController';
 import Block from '../../utils/block';
 import template from './profile.hbs?raw';
@@ -17,9 +17,8 @@ export class Profile extends Block {
         super();
 
         this.lists.FormFields = formFields.map((inputProps) => {
-            return new Input({
-                ...inputProps,
-                validate: true
+            return new TextRow({
+                ...inputProps
             });
         });
 

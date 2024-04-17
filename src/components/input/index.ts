@@ -12,7 +12,8 @@ type InputProps = {
     validate?: boolean;
     error?: string;
     events?: {
-        click: (e: Event) => void;
+        click?: (e: Event) => void;
+        change?: (e: Event) => void;
     };
 };
 
@@ -21,6 +22,7 @@ export class Input extends Block {
         super({
             ...props,
             events: {
+                ...props.events,
                 blur: (e: Event) => {
                     if (this.props.validate) {
                         const target = e.target as HTMLInputElement;
@@ -31,7 +33,7 @@ export class Input extends Block {
                             value: target.value
                         });
                     }
-                },
+                }
             }
         });
     }

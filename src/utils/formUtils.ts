@@ -50,6 +50,8 @@ export const validateInputField = (input: HTMLInputElement) => {
             isFieldValid = validateEmail(value);
             break;
         case 'password':
+        case 'oldPassword':
+        case 'newPassword':
             isFieldValid = validatePassword(value);
             break;
         case 'phone':
