@@ -43,6 +43,11 @@
         "no-param-reassign": "off",
         "no-useless-constructor": "off",
         "no-console": "off",
-        "func-names": "off"
+        "func-names": "off",
+        "max-classes-per-file": "off",
+        "no-constructor-return": "off",
+        "no-useless-return": "off",
+        "max-len": [2, 120],
+        "no-continue": "off"
     }
 }

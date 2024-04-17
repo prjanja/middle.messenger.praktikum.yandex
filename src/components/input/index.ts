@@ -23,13 +23,15 @@ export class Input extends Block {
             events: {
                 blur: (e: Event) => {
                     if (this.props.validate) {
-                        const error = validateInputField(e.target as HTMLInputElement);
+                        const target = e.target as HTMLInputElement;
+                        const error = validateInputField(target);
 
                         this.setProps({
-                            error
+                            error,
+                            value: target.value
                         });
                     }
-                }
+                },
             }
         });
     }
