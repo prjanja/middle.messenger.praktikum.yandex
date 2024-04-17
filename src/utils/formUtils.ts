@@ -3,6 +3,11 @@ export const printFormData = (form: HTMLFormElement) => {
     console.log([...formData.entries()].reduce((acc, cur) => ({ ...acc, [cur[0]]: cur[1] }), {}));
 };
 
+export const getFormData = (form: HTMLFormElement) => {
+    const formData = new FormData(form);
+    return [...formData.entries()].reduce((acc, cur) => ({ ...acc, [cur[0]]: cur[1] }), {});
+};
+
 export const validateName = (s: string) => /^[A-Z,А-Я][a-zA-Zа-яА-я-]+$/.test(s);
 
 export const validateLogin = (s: string) => {

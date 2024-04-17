@@ -1,3 +1,6 @@
+import { BASE_URL, Routes } from '../consts';
+import { AppRouter } from './router';
+
 const METHODS = {
     GET: 'GET',
     POST: 'POST',
@@ -5,14 +8,20 @@ const METHODS = {
     DELETE: 'DELETE'
 };
 
+const DEFAULT_ERROR = { reason: 'Что-то пошло не так' };
+
 type FetchOptions = {
     method?: string;
-    headers?: Headers;
+    headers?: Record<string, string>;
     timeout?: number;
-    data?: FormData | URLSearchParams;
+    data?: FormData | URLSearchParams | Record<string, string | number>;
 };
 
-type HTTPMethod = (url: string, options?: FetchOptions) => Promise<unknown>;
+type HTTPMethod = (url: string, options?: FetchOptions) => Promise<XMLHttpRequest>;
+
+type HttpErrorBody = {
+    reason: string;
+};
 
 export function createQueryParams(params: Record<string, any> = {}, arrayDelimiter = ',') {
     if (typeof params !== 'object') {
@@ -26,7 +35,32 @@ export function createQueryParams(params: Record<string, any> = {}, arrayDelimit
     return queryString && '?' + queryString;
 }
 
+export const handleErrorResponse = (response: XMLHttpRequest) => {
+    const errorResponse: HttpErrorBody = response.response ? JSON.parse(response.response) : DEFAULT_ERROR;
+
+    if (response.status >= 500) {
+        AppRouter.go(Routes.ERROR);
+        return;
+    }
+
+    if ([401, 409].includes(response.status)) {
+        AppRouter.go(Routes.LOGIN);
+        return;
+    }
+
+    if (errorResponse?.reason === 'User already in system') {
+        AppRouter.go(Routes.MESSANGER);
+        return;
+    }
+};
+
 class HTTPTransport {
+    _baseUrl: string;
+
+    constructor(endpoint: string) {
+        this._baseUrl = BASE_URL + endpoint;
+    }
+
     get: HTTPMethod = (url, options = {}) => {
         return this.request(url, { ...options, method: METHODS.GET }, options.timeout);
     };
@@ -43,8 +77,9 @@ class HTTPTransport {
         return this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
     };
 
-    request = (url: string, options: FetchOptions = {}, timeout = 5000) => {
+    request = (url: string, options: FetchOptions = {}, timeout = 5000): Promise<XMLHttpRequest> => {
         const { headers = {} as Headers, method, data } = options;
+        const requestURL = this._baseUrl + url;
 
         return new Promise(function (resolve, reject) {
             if (!method) {
@@ -54,8 +89,7 @@ class HTTPTransport {
 
             const xhr = new XMLHttpRequest();
             const isGet = method === METHODS.GET;
-
-            xhr.open(method, isGet && !!data ? `${url}${createQueryParams(data)}` : url);
+            xhr.open(method, isGet && !!data ? `${requestURL}${createQueryParams(data)}` : requestURL);
 
             Object.keys(headers).forEach((key) => {
                 // @ts-expect-error: Из-за того, что headers может быть пустым он преобразуется в {}
@@ -70,11 +104,12 @@ class HTTPTransport {
             xhr.onerror = reject;
             xhr.timeout = timeout;
             xhr.ontimeout = reject;
+            xhr.withCredentials = true;
 
             if (isGet || !data) {
                 xhr.send();
             } else {
-                xhr.send(data);
+                xhr.send(data instanceof FormData ? data : JSON.stringify(data));
             }
         });
     };
