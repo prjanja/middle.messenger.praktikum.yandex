@@ -5,8 +5,8 @@ import { Routes } from './consts';
 
 AppRouter.use(Routes.LOGIN, Pages.Login)
     .use(Routes.REGISTER, Pages.Register)
-    .use(Routes.PROFILE, Pages.Profile)
-    .use(Routes.MESSANGER, Pages.Feed)
+    .use(Routes.PROFILE, Pages.ProfileConnected)
+    .use(Routes.MESSANGER, Pages.FeedConnected)
     .use(Routes.ERROR, Pages.Error)
     .use(Routes.NOT_FOUND, Pages.NotFound)
     .use(Routes.PROFILE_EDIT, Pages.ProfileEdit)

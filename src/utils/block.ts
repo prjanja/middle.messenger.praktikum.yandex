@@ -3,7 +3,7 @@ import { v4 } from 'uuid';
 import { EventBus } from './eventBus';
 import { AnyFunction } from './types';
 
-type BlockProps = {
+export type BlockProps = {
     attr?: Record<string, string>;
     events?: Record<string, AnyFunction>;
     [key: string]: unknown;
@@ -129,13 +129,13 @@ export default class Block {
         });
     }
 
-    setProps = (nextProps: BlockProps) => {
+    setProps(nextProps: BlockProps) {
         if (!nextProps) {
             return;
         }
 
         Object.assign(this.props as object, nextProps);
-    };
+    }
 
     get element() {
         return this._element;

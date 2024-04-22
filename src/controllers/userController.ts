@@ -13,7 +13,7 @@ export class UserController {
             .changeUserProfile(data)
             .then((res) => {
                 if (res.status === 200) {
-                    store.setState('user', res);
+                    store.setState('user', JSON.parse(res.response));
                     AppRouter.go(Routes.PROFILE);
                 } else {
                     handleErrorResponse(res);
@@ -29,7 +29,7 @@ export class UserController {
             .changeUserAvatar(data)
             .then((res) => {
                 if (res.status === 200) {
-                    store.setState('user', res);
+                    store.setState('user', JSON.parse(res.response));
                 } else {
                     handleErrorResponse(res);
                 }

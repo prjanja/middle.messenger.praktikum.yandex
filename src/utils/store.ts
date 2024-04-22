@@ -1,14 +1,18 @@
-import { set } from '.';
+import { Indexed, set } from '.';
+import Block from './block';
 import { EventBus } from './eventBus';
 
-type RootState = {};
+export type RootState = {
+    user: {};
+    chats: unknown[];
+};
 
 enum StoreEvents {
     Updated = 'Updated'
 }
 
 class Store extends EventBus {
-    private state: RootState = {};
+    private state: RootState = {} as RootState;
 
     public getState() {
         return this.state;
@@ -20,4 +24,24 @@ class Store extends EventBus {
     }
 }
 
-export default new Store();
+const AppStore = new Store();
+
+export const connect = (mapStateToProps: (data: RootState) => Indexed) => {
+    return (Component: typeof Block) => {
+        return class extends Component {
+            constructor(...args: any) {
+                const state = mapStateToProps(AppStore.getState());
+
+                super({ ...args, ...state });
+
+                AppStore.on(StoreEvents.Updated, () => {
+                    const newProps = mapStateToProps(AppStore.getState());
+
+                    this.setProps(newProps);
+                });
+            }
+        };
+    };
+};
+
+export default AppStore;

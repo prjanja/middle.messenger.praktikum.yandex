@@ -14,7 +14,7 @@ type FetchOptions = {
     method?: string;
     headers?: Record<string, string>;
     timeout?: number;
-    data?: FormData | URLSearchParams | Record<string, string | number>;
+    data?: FormData | URLSearchParams | Record<string, string | number | number[]>;
 };
 
 type HTTPMethod = (url: string, options?: FetchOptions) => Promise<XMLHttpRequest>;

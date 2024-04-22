@@ -1,5 +1,6 @@
 import { User } from '../../api/types';
-import { Button, Input } from '../../components';
+import { Button, Input, Link } from '../../components';
+import { Routes } from '../../consts';
 import { AuthController } from '../../controllers/authController';
 import Block from '../../utils/block';
 import { getFormData, printFormData, validateForm } from '../../utils/formUtils';
@@ -24,6 +25,12 @@ export class Register extends Block {
                 validate: true
             });
         });
+
+        this.children.LoginLink = new Link({
+            label: 'Войти',
+            href: Routes.LOGIN
+        });
+
         this.children.CreateButton = new Button({
             type: 'submit',
             label: 'Создать аккаунт',

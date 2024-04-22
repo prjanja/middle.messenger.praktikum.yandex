@@ -45,7 +45,7 @@ export class AuthController {
             .user()
             .then((res) => {
                 if (res.status === 200) {
-                    store.setState('user', res);
+                    store.setState('user', JSON.parse(res.response));
                 } else {
                     handleErrorResponse(res);
                 }
@@ -62,7 +62,6 @@ export class AuthController {
                 console.log(res);
                 if (res.status === 200) {
                     store.setState('user', null);
-                    console.log('here');
                     AppRouter.go(Routes.LOGIN);
                 } else {
                     handleErrorResponse(res);

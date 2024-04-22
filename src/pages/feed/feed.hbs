@@ -1,8 +1,16 @@
 <div class="feed_wrapper">
     <div class="feed">
         <div class="feed__left_column">
-            <a href="settings">Профиль &gt;</a>
+            {{{ProfileLink}}}
             {{{ SearchInput }}}
+            <hr />
+            <div>
+                <div>
+                    {{{NewChatNameInput}}}
+                </div>
+                {{{CreateChatButton}}}
+            </div>
+            <hr />
             <div class="chat__list">
                 {{{ ListItems }}}
             </div>

@@ -1,49 +1,65 @@
-import { Button, ChatListItem, Input } from '../../components';
-import Block from '../../utils/block';
+import { Chat } from '../../api/types';
+import { Button, ChatListItem, Input, Link } from '../../components';
+import { BASE_URL, Routes } from '../../consts';
+import { ChatController } from '../../controllers/chatController';
+import Block, { BlockProps } from '../../utils/block';
 import { printFormData } from '../../utils/formUtils';
+import { RootState, connect } from '../../utils/store';
 import template from './feed.hbs?raw';
 
-const chats = [
-    {
-        id: '111',
-        title: 'Андрей',
-        date: '10:15',
-        avatar: '/avatar.svg',
-        lastMessage: 'Изображение',
-        notification: 2
-    },
-    {
-        id: '222',
-        title: 'Киноклуб',
-        date: '10:15',
-        avatar: '/avatar.svg',
-        lastMessage: 'стикер',
-        notification: 0
-    },
-    {
-        id: '333',
-        title: 'Илья',
-        date: '10:15',
-        avatar: '/avatar.svg',
-        lastMessage:
-            'Друзья, у меня для вас особенный выпуск новостей! Длинное сообщение, которое не помещается и нужны элипсы',
-        notification: 0
-    }
-];
+type StateProps = {
+    chats: Chat[];
+};
 
-type OwnProps = { currentChatId: string | null; chatTitle: string };
+type OwnProps = { currentChatId: number | null; chatTitle: string };
+
+type FeedProps = OwnProps & StateProps;
 export class Feed extends Block {
-    constructor(props: OwnProps) {
-        super(props);
+    constructor(props: FeedProps) {
+        ChatController.getChats();
+        const { chats, ...rest } = props;
+        super(rest);
+
+        this.children.ProfileLink = new Link({
+            label: 'Профиль >',
+            href: Routes.PROFILE
+        });
 
         this.children.SearchInput = new Input({
             placeholder: 'Поиск',
             name: 'login'
         });
 
-        this.lists.ListItems = chats.map((chat) => {
+        this.children.NewChatNameInput = new Input({
+            placeholder: 'Имя нового чата',
+            name: 'chatName'
+        });
+        this.children.CreateChatButton = new Button({
+            type: 'button',
+            label: 'Создать новый чат',
+            events: {
+                click: (e) => {
+                    e.preventDefault();
+                    const chatNameInput = document.querySelector('input[name="chatName"]');
+                    if (chatNameInput) {
+                        const { value: title } = chatNameInput as HTMLInputElement;
+                        if (title) {
+                            ChatController.createChat({ title }).then(() => {
+                                ChatController.getChats();
+                            });
+                        }
+                    }
+                }
+            }
+        });
+
+        this.props.ListItems = props.chats?.map((chat) => {
             return new ChatListItem({
-                ...chat,
+                title: chat.title,
+                date: chat.last_message?.time,
+                lastMessage: chat.last_message?.content,
+                notification: chat.unread_count,
+                avatar: BASE_URL + '/resources' + chat.avatar,
                 events: {
                     click: () => {
                         this.setProps({
@@ -77,7 +93,38 @@ export class Feed extends Block {
         });
     }
 
+    setProps(newProps: BlockProps) {
+        const chats = newProps.chats as Chat[];
+        if (chats) {
+            this.lists.ListItems = chats.map((chat) => {
+                return new ChatListItem({
+                    title: chat.title,
+                    date: chat.last_message?.time,
+                    lastMessage: chat.last_message?.content,
+                    notification: chat.unread_count,
+                    avatar: BASE_URL + '/resources' + chat.avatar,
+                    events: {
+                        click: () => {
+                            this.setProps({
+                                currentChatId: chat.id,
+                                chatTitle: chat.title
+                            });
+                        }
+                    }
+                });
+            });
+        }
+
+        super.setProps(newProps);
+    }
+
     render() {
         return template;
     }
 }
+
+const mapStateToProps = (state: RootState) => ({
+    chats: state.chats
+});
+
+export const FeedConnected = connect(mapStateToProps)(Feed);
