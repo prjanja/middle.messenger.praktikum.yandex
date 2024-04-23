@@ -5,6 +5,7 @@ import { EventBus } from './eventBus';
 export type RootState = {
     user: {};
     chats: unknown[];
+    chatUsers: unknown[];
 };
 
 enum StoreEvents {

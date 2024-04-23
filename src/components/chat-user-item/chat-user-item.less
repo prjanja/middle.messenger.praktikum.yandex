@@ -1,0 +1,56 @@
+.chat__user {
+    &_item {
+        &:hover {
+            background-color: @colorFillSecondary;
+            &::after {    
+                content: 'X';
+                position: absolute;
+                font-size: 40px;
+            }
+        }
+
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 8px 0;
+        padding: 8px;
+
+        &_avatar {
+            width: 47px;
+            flex-shrink: 0;
+        }
+
+        &_content {
+            flex: 1;
+        }
+
+        &_header {
+            display: flex;
+
+            &_title {
+                flex: 1;
+            }
+
+            &_date {
+                max-width: 50px;
+            }
+        }
+
+        &_description {
+            display: flex;
+
+            &_text {
+                flex: 1;
+            }
+
+            &_notification {
+                max-width: 50px;
+                background-color: @colorBadge;
+                padding: 0 8px;
+                border-radius: 10px;
+                color: white;
+            }
+        }
+    }
+}

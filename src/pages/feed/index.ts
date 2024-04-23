@@ -1,5 +1,8 @@
-import { Chat } from '../../api/types';
-import { Button, ChatListItem, Input, Link } from '../../components';
+import { Chat, User } from '../../api/types';
+import {
+    Button, ChatListItem, Input, Link
+} from '../../components';
+import { ChatUserItem } from '../../components/chat-user-item';
 import { BASE_URL, Routes } from '../../consts';
 import { ChatController } from '../../controllers/chatController';
 import Block, { BlockProps } from '../../utils/block';
@@ -62,10 +65,7 @@ export class Feed extends Block {
                 avatar: BASE_URL + '/resources' + chat.avatar,
                 events: {
                     click: () => {
-                        this.setProps({
-                            currentChatId: chat.id,
-                            chatTitle: chat.title
-                        });
+                        this.handleOpenChat(chat);
                     }
                 }
             });
@@ -91,6 +91,31 @@ export class Feed extends Block {
                 }
             }
         });
+
+        this.children.UserIDInput = new Input({
+            placeholder: 'Введите id юзера для добавления',
+            name: 'userIdInput'
+        });
+        this.children.AddUserButton = new Button({
+            type: 'button',
+            label: 'Добавить',
+            events: {
+                click: (e) => {
+                    e.preventDefault();
+                    const input = document.querySelector('input[name="userIdInput"]');
+
+                    if (input) {
+                        const { value: id } = input as HTMLInputElement;
+
+                        if (id && this.props.currentChatId) {
+                            ChatController.addUserToChat([Number(id)], this.props.currentChatId as number).then(() => {
+                                ChatController.getChats();
+                            });
+                        }
+                    }
+                }
+            }
+        });
     }
 
     setProps(newProps: BlockProps) {
@@ -105,10 +130,22 @@ export class Feed extends Block {
                     avatar: BASE_URL + '/resources' + chat.avatar,
                     events: {
                         click: () => {
-                            this.setProps({
-                                currentChatId: chat.id,
-                                chatTitle: chat.title
-                            });
+                            this.handleOpenChat(chat);
+                        }
+                    }
+                });
+            });
+        }
+
+        const chatUsers = newProps.chatUsers as User[];
+        if (chatUsers) {
+            this.lists.Users = chatUsers.map((user) => {
+                return new ChatUserItem({
+                    avatar: BASE_URL + '/resources' + user.avatar,
+                    title: user.display_name || user.first_name,
+                    events: {
+                        click: () => {
+                            ChatController.deleteUserFromChat([user.id!], this.props.currentChatId as number);
                         }
                     }
                 });
@@ -118,13 +155,23 @@ export class Feed extends Block {
         super.setProps(newProps);
     }
 
+    handleOpenChat = (chat: Chat) => {
+        ChatController.getChatUsers(chat.id).then(() => {
+            this.setProps({
+                currentChatId: chat.id,
+                chatTitle: chat.title
+            });
+        });
+    };
+
     render() {
         return template;
     }
 }
 
 const mapStateToProps = (state: RootState) => ({
-    chats: state.chats
+    chats: state.chats,
+    chatUsers: state.chatUsers
 });
 
 export const FeedConnected = connect(mapStateToProps)(Feed);

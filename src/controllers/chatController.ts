@@ -56,7 +56,7 @@ export class ChatController {
             .getChatUsers(id)
             .then((res) => {
                 if (res.status === 200) {
-                    console.log(res);
+                    store.setState('chatUsers', JSON.parse(res.response));
                 } else {
                     handleErrorResponse(res);
                 }
@@ -71,7 +71,7 @@ export class ChatController {
             .addUserToChat(users, chatId)
             .then((res) => {
                 if (res.status === 200) {
-                    console.log(res);
+                    this.getChatUsers(chatId);
                 } else {
                     handleErrorResponse(res);
                 }
@@ -86,7 +86,7 @@ export class ChatController {
             .deleteUserFromChat(users, chatId)
             .then((res) => {
                 if (res.status === 200) {
-                    console.log(res);
+                    this.getChatUsers(chatId);
                 } else {
                     handleErrorResponse(res);
                 }
