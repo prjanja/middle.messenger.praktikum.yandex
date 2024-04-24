@@ -1,17 +1,21 @@
-import { Chat, User } from '../../api/types';
+import { Chat, Message as TMessage, User } from '../../api/types';
 import {
     Button, ChatListItem, Input, Link
 } from '../../components';
 import { ChatUserItem } from '../../components/chat-user-item';
+import { Message } from '../../components/message';
 import { BASE_URL, Routes } from '../../consts';
 import { ChatController } from '../../controllers/chatController';
+import { MessagesController } from '../../controllers/messagesController';
 import Block, { BlockProps } from '../../utils/block';
-import { printFormData } from '../../utils/formUtils';
+import { getFormData, printFormData } from '../../utils/formUtils';
 import { RootState, connect } from '../../utils/store';
 import template from './feed.hbs?raw';
 
 type StateProps = {
     chats: Chat[];
+    chatUsers: User[];
+    messages: TMessage[];
 };
 
 type OwnProps = { currentChatId: number | null; chatTitle: string };
@@ -20,7 +24,9 @@ type FeedProps = OwnProps & StateProps;
 export class Feed extends Block {
     constructor(props: FeedProps) {
         ChatController.getChats();
-        const { chats, ...rest } = props;
+        const {
+            chats, chatUsers, messages, ...rest
+        } = props;
         super(rest);
 
         this.children.ProfileLink = new Link({
@@ -57,12 +63,29 @@ export class Feed extends Block {
         });
 
         this.props.ListItems = props.chats?.map((chat) => {
+            const date = chat.last_message?.time ? new Date(chat.last_message?.time).toLocaleString() : '';
             return new ChatListItem({
                 title: chat.title,
-                date: chat.last_message?.time,
+                date,
                 lastMessage: chat.last_message?.content,
                 notification: chat.unread_count,
-                avatar: BASE_URL + '/resources' + chat.avatar,
+                avatar: BASE_URL + '/resources/' + chat.avatar,
+                events: {
+                    click: () => {
+                        this.handleOpenChat(chat);
+                    }
+                }
+            });
+        });
+
+        this.props.Messages = props.chats?.map((chat) => {
+            const date = chat.last_message?.time ? new Date(chat.last_message?.time).toLocaleString() : '';
+            return new ChatListItem({
+                title: chat.title,
+                date,
+                lastMessage: chat.last_message?.content,
+                notification: chat.unread_count,
+                avatar: BASE_URL + '/resources/' + chat.avatar,
                 events: {
                     click: () => {
                         this.handleOpenChat(chat);
@@ -76,18 +99,20 @@ export class Feed extends Block {
             type: 'button'
         });
         this.children.MessageInput = new Input({
-            name: 'message',
-            validate: true
+            name: 'message'
         });
         this.children.SendButton = new Button({
             icon: '/send.svg',
-            type: 'button',
+            type: 'submit',
             events: {
                 click: (e) => {
                     e.preventDefault();
 
                     const form = this.element?.querySelector('form') as HTMLFormElement;
                     printFormData(form);
+                    const formData = getFormData(form);
+                    MessagesController.sendMessage(this.props.currentChatId as number, formData.message as string);
+                    form.reset();
                 }
             }
         });
@@ -120,11 +145,13 @@ export class Feed extends Block {
 
     setProps(newProps: BlockProps) {
         const chats = newProps.chats as Chat[];
+
         if (chats) {
             this.lists.ListItems = chats.map((chat) => {
+                const date = chat.last_message?.time ? new Date(chat.last_message?.time).toLocaleString() : '';
                 return new ChatListItem({
                     title: chat.title,
-                    date: chat.last_message?.time,
+                    date,
                     lastMessage: chat.last_message?.content,
                     notification: chat.unread_count,
                     avatar: BASE_URL + '/resources' + chat.avatar,
@@ -152,16 +179,32 @@ export class Feed extends Block {
             });
         }
 
+        const messages = newProps.messages as TMessage[];
+        if (messages) {
+            this.lists.Messages = messages.map((message) => {
+                return new Message({ ...message });
+            });
+        }
+
         super.setProps(newProps);
     }
 
     handleOpenChat = (chat: Chat) => {
-        ChatController.getChatUsers(chat.id).then(() => {
-            this.setProps({
-                currentChatId: chat.id,
-                chatTitle: chat.title
+        ChatController.getChatUsers(chat.id)
+            .then(() => ChatController.getToken(chat.id))
+            .then(({ token }) => {
+                if (token) {
+                    MessagesController.connect(chat.id, token).then(() => {
+                        MessagesController.updateChatHistory(chat.id);
+                    });
+                }
+            })
+            .then(() => {
+                this.setProps({
+                    currentChatId: chat.id,
+                    chatTitle: chat.title
+                });
             });
-        });
     };
 
     render() {
@@ -171,7 +214,8 @@ export class Feed extends Block {
 
 const mapStateToProps = (state: RootState) => ({
     chats: state.chats,
-    chatUsers: state.chatUsers
+    chatUsers: state.chatUsers,
+    messages: state.messages
 });
 
 export const FeedConnected = connect(mapStateToProps)(Feed);

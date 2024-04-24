@@ -24,8 +24,8 @@ export type SignInData = {
 };
 
 export type PasswordChangeData = {
-    oldPassword: 'string';
-    newPassword: 'string';
+    oldPassword: string;
+    newPassword: string;
 };
 
 export type UserSearch = {
@@ -46,5 +46,22 @@ export type Chat = {
         user: User;
         time: string;
         content: string;
+    };
+};
+
+export type Message = {
+    chat_id: string;
+    time: string;
+    type: 'message' | 'file' | 'sticker';
+    user_id: string;
+    content: string;
+    file?: {
+        id: number;
+        user_id: number;
+        path: string;
+        filename: string;
+        content_type: string;
+        content_size: number;
+        upload_date: string;
     };
 };

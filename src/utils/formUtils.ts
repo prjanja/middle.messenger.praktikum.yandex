@@ -5,7 +5,7 @@ export const printFormData = (form: HTMLFormElement) => {
 
 export const getFormData = (form: HTMLFormElement) => {
     const formData = new FormData(form);
-    return [...formData.entries()].reduce((acc, cur) => ({ ...acc, [cur[0]]: cur[1] }), {});
+    return [...formData.entries()].reduce((acc, cur) => ({ ...acc, [cur[0]]: cur[1] }), {} as Record<string, unknown>);
 };
 
 export const validateName = (s: string) => /^[A-Z,А-Я][a-zA-Zа-яА-я-]+$/.test(s);

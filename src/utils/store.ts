@@ -1,11 +1,13 @@
 import { Indexed, set } from '.';
 import Block from './block';
 import { EventBus } from './eventBus';
+import { User, Chat, Message } from '../api/types';
 
 export type RootState = {
-    user: {};
-    chats: unknown[];
-    chatUsers: unknown[];
+    user: User;
+    chats: Chat[];
+    chatUsers: User[];
+    messages: Message[];
 };
 
 enum StoreEvents {
@@ -13,7 +15,12 @@ enum StoreEvents {
 }
 
 class Store extends EventBus {
-    private state: RootState = {} as RootState;
+    private state: RootState = {
+        user: {} as User,
+        chats: [],
+        chatUsers: [],
+        messages: []
+    } as RootState;
 
     public getState() {
         return this.state;

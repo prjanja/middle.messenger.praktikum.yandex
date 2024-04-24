@@ -101,8 +101,7 @@ export class ChatController {
             .getToken(chatId)
             .then((res) => {
                 if (res.status === 200) {
-                    console.log(res);
-                    return res;
+                    return JSON.parse(res.response);
                 }
                 handleErrorResponse(res);
                 return null;

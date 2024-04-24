@@ -3,6 +3,7 @@ import * as Pages from './pages';
 import { AppRouter } from './utils/router';
 import { Routes } from './consts';
 import { NavMenu } from './components/nav-menu';
+import { AuthController } from './controllers/authController';
 
 AppRouter.use(Routes.LOGIN, Pages.Login)
     .use(Routes.REGISTER, Pages.Register)
@@ -19,3 +20,5 @@ const block = new NavMenu();
 container.innerHTML = '';
 container.append(block.getContent()!);
 block.dispatchComponentDidMount();
+
+AuthController.user();
