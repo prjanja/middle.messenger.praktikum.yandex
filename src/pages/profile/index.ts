@@ -2,7 +2,7 @@ import { User } from '../../api/types';
 import {
     Avatar, Button, Link, TextRow
 } from '../../components';
-import { Routes } from '../../consts';
+import { BASE_URL, Routes } from '../../consts';
 import { AuthController } from '../../controllers/authController';
 import Block from '../../utils/block';
 import { RootState, connect } from '../../utils/store';
@@ -47,7 +47,7 @@ export class Profile extends Block {
         });
 
         this.children.Avatar = new Avatar({
-            avatar: '/avatar.svg'
+            avatar: user.avatar ? BASE_URL + '/resources/' + user.avatar : '/avatar.svg'
         });
 
         this.children.LogoutButton = new Button({

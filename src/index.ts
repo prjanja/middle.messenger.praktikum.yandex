@@ -11,7 +11,7 @@ AppRouter.use(Routes.LOGIN, Pages.Login)
     .use(Routes.MESSANGER, Pages.FeedConnected)
     .use(Routes.ERROR, Pages.Error)
     .use(Routes.NOT_FOUND, Pages.NotFound)
-    .use(Routes.PROFILE_EDIT, Pages.ProfileEdit)
+    .use(Routes.PROFILE_EDIT, Pages.ProfileEditConnected)
     .use(Routes.PROFILE_EDIT_PASSWORD, Pages.ProfileEditPassword)
     .start();
 

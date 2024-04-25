@@ -99,7 +99,8 @@ export class Feed extends Block {
             type: 'button'
         });
         this.children.MessageInput = new Input({
-            name: 'message'
+            name: 'message',
+            validate: true
         });
         this.children.SendButton = new Button({
             icon: '/send.svg',
@@ -111,7 +112,9 @@ export class Feed extends Block {
                     const form = this.element?.querySelector('form') as HTMLFormElement;
                     printFormData(form);
                     const formData = getFormData(form);
-                    MessagesController.sendMessage(this.props.currentChatId as number, formData.message as string);
+                    if (formData.message) {
+                        MessagesController.sendMessage(this.props.currentChatId as number, formData.message as string);
+                    }
                     form.reset();
                 }
             }
