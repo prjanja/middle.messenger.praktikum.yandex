@@ -1,37 +1,24 @@
 import './styles/style.less';
 import * as Pages from './pages';
+import { AppRouter } from './utils/router';
+import { Routes } from './consts';
+import { NavMenu } from './components/nav-menu';
+import { AuthController } from './controllers/authController';
 
-const container = document.getElementById('app')!;
-const LOGIN_PAGE = 'Login';
+AppRouter.use(Routes.LOGIN, Pages.Login)
+    .use(Routes.REGISTER, Pages.Register)
+    .use(Routes.PROFILE, Pages.ProfileConnected)
+    .use(Routes.MESSANGER, Pages.FeedConnected)
+    .use(Routes.ERROR, Pages.Error)
+    .use(Routes.NOT_FOUND, Pages.NotFound)
+    .use(Routes.PROFILE_EDIT, Pages.ProfileEditConnected)
+    .use(Routes.PROFILE_EDIT_PASSWORD, Pages.ProfileEditPassword)
+    .start();
 
-const setHash = (hash: string) => {
-    window.location.hash = hash;
-};
+const container = document.getElementById('menu')!;
+const block = new NavMenu();
+container.innerHTML = '';
+container.append(block.getContent()!);
+block.dispatchComponentDidMount();
 
-function navigate(page: string) {
-    if (page.startsWith('#')) {
-        page = page.slice(1);
-    }
-
-    // @ts-expect-error: Страница имеет тип any, хотя по факту это класс
-    const CurrentPage = Pages[page] || Pages.NotFound;
-
-    const block = new CurrentPage();
-    container.innerHTML = '';
-    container.append(block.getContent()!);
-    block.dispatchComponentDidMount();
-}
-
-function locationHashChanged() {
-    navigate(window.location.hash);
-}
-
-window.onhashchange = locationHashChanged;
-
-document.addEventListener('DOMContentLoaded', () => {
-    if (window.location.hash.slice(1) !== LOGIN_PAGE) {
-        setHash(LOGIN_PAGE);
-    } else {
-        navigate(LOGIN_PAGE);
-    }
-});
+AuthController.user();

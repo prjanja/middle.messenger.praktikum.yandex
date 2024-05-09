@@ -1,6 +1,9 @@
-import { Button, Input } from '../../components';
+import { SignInData } from '../../api/types';
+import { Button, Input, Link } from '../../components';
+import { Routes } from '../../consts';
+import { AuthController } from '../../controllers/authController';
 import Block from '../../utils/block';
-import { printFormData, validateForm } from '../../utils/formUtils';
+import { getFormData, printFormData, validateForm } from '../../utils/formUtils';
 import template from './login.hbs?raw';
 
 const formFields = [
@@ -18,8 +21,13 @@ export class Login extends Block {
             });
         });
 
+        this.children.RegisterLink = new Link({
+            label: 'Регистрация',
+            href: Routes.REGISTER
+        });
+
         this.children.LoginButton = new Button({
-            type: 'button',
+            type: 'submit',
             label: 'Вход',
             events: {
                 click: (e) => {
@@ -28,6 +36,7 @@ export class Login extends Block {
                     const form = this.element?.querySelector('form') as HTMLFormElement;
                     printFormData(form);
                     validateForm(form);
+                    AuthController.signIn(getFormData(form) as SignInData);
                 }
             }
         });

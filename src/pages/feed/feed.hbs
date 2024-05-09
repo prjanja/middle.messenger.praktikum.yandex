@@ -1,8 +1,16 @@
 <div class="feed_wrapper">
     <div class="feed">
         <div class="feed__left_column">
-            <a href="#Profile">Профиль &gt;</a>
+            {{{ProfileLink}}}
             {{{ SearchInput }}}
+            <hr />
+            <div>
+                <div>
+                    {{{NewChatNameInput}}}
+                </div>
+                {{{CreateChatButton}}}
+            </div>
+            <hr />
             <div class="chat__list">
                 {{{ ListItems }}}
             </div>
@@ -10,24 +18,31 @@
         <div class="feed__right_column">
             {{#if currentChatId}}
             <div class='chat__container'>
+                <div class="chat__add_user">
+                    {{{UserIDInput}}}
+                    {{{AddUserButton}}}
+                </div>
                 <div class="chat__title">
                     {{ chatTitle }}
                 </div>
+                <div class="chat__user_list">
+                    {{{Users}}}
+                </div>
                 <div class='chat__messages_wrapper'>
-                    Сообщения чата {{currentChatId}}
+                    {{{Messages}}}
                 </div>
                 <div class='chat__input_wrapper'>
-                    <form>
+                    <form onsubmit="return false">
                         {{{AttachButton}}}
                         {{{MessageInput}}}
                         {{{SendButton}}}
                     </form>
                 </div>
             </div>
+            {{else}}
+            <div class="empty_chat">Выберите чат чтобы отправить сообщение</div>
+            {{/if}}
         </div>
-        {{else}}
-        <div class="empty_chat">Выберите чат чтобы отправить сообщение</div>
-        {{/if}}
     </div>
 </div>
 </div>

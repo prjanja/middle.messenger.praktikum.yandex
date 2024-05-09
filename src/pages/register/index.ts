@@ -1,6 +1,9 @@
-import { Button, Input } from '../../components';
+import { User } from '../../api/types';
+import { Button, Input, Link } from '../../components';
+import { Routes } from '../../consts';
+import { AuthController } from '../../controllers/authController';
 import Block from '../../utils/block';
-import { printFormData, validateForm } from '../../utils/formUtils';
+import { getFormData, printFormData, validateForm } from '../../utils/formUtils';
 import template from './register.hbs?raw';
 
 const formFields = [
@@ -22,8 +25,14 @@ export class Register extends Block {
                 validate: true
             });
         });
+
+        this.children.LoginLink = new Link({
+            label: 'Войти',
+            href: Routes.LOGIN
+        });
+
         this.children.CreateButton = new Button({
-            type: 'button',
+            type: 'submit',
             label: 'Создать аккаунт',
             events: {
                 click: (e) => {
@@ -32,6 +41,7 @@ export class Register extends Block {
                     const form = this.element?.querySelector('form') as HTMLFormElement;
                     printFormData(form);
                     validateForm(form);
+                    AuthController.signUp(getFormData(form) as User);
                 }
             }
         });

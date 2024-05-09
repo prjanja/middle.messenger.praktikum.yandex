@@ -4,8 +4,8 @@ import template from './chat-list-item.hbs?raw';
 
 type ChatListItemProps = {
     title: string;
-    date: string;
-    lastMessage: string;
+    date?: string;
+    lastMessage?: string;
     notification?: number;
     avatar: string;
     events?: {
