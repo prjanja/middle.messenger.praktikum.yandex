@@ -17,7 +17,8 @@
         "stylelint:fix": "stylelint \"src/**/*.less\" --fix",
         "prettier:fix": "prettier --write \"src/**/*.ts\"",
         "pre-commit": "lint-staged",
-        "test": "ts-mocha"
+        "test": "ts-mocha",
+        "prepare": "husky install"
     },
     "devDependencies": {
         "@types/chai": "^4.3.16",
