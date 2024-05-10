@@ -1,3 +1,4 @@
+import { Routes } from '../consts';
 import Block from './block';
 
 function isEqual(lhs: string, rhs: string) {
@@ -60,7 +61,7 @@ class Route {
     }
 }
 
-class Router {
+export class Router {
     static __instance: Router;
 
     routes!: Route[];
@@ -104,6 +105,7 @@ class Router {
     _onRoute(pathname: string) {
         const route = this.getRoute(pathname);
         if (!route) {
+            this.go(Routes.NOT_FOUND);
             return;
         }
 
