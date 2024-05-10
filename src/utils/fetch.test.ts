@@ -10,11 +10,12 @@ describe('HTTPTransport test', () => {
 
     beforeEach(() => {
         xhr = sinon.useFakeXMLHttpRequest();
-        // @ts-expect-error
+        // @ts-expect-error особенности мока
         global.XMLHttpRequest = xhr;
 
         httpTransport = new HTTPTransport('');
 
+        // eslint-disable-next-line @typescript-eslint/no-shadow
         xhr.onCreate = function (xhr) {
             requests.push(xhr);
         };
