@@ -16,7 +16,7 @@
         "stylelint": "stylelint \"src/**/*.less\"",
         "stylelint:fix": "stylelint \"src/**/*.less\" --fix",
         "prettier:fix": "prettier --write \"src/**/*.ts\"",
-        "pre-commit": "lint-staged",
+        "pre-commit": "lint-staged && npm run test",
         "test": "ts-mocha",
         "prepare": "husky install"
     },
